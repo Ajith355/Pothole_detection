@@ -6,11 +6,11 @@ from ultralytics import YOLO
 # --- CONFIGURATION ---
 VIDEO_PATH = "demo.mp4"
 
-# Put your 3 model paths here
+# Put your model paths here
 MODELS = {
+    "New Model": "pothole_detector_v1.pt",
     "Model A": "best.pt",
-    "Model B": "best _2.pt",
-    "Model C": "best_3.pt"
+    "Model B": "best _2.pt"
 }
 CONF_THRESHOLD = 0.4
 
@@ -87,9 +87,26 @@ def main():
                     stats[name]['count'] += 1
                     stats[name]['sum_conf'] += conf
 
+                    # Get Class Name
+                    cls_id = int(box.cls[0])
+                    class_name = results.names[cls_id]
+
                     # Draw Box (Manual draw to control color/thickness)
                     x1, y1, x2, y2 = map(int, box.xyxy[0])
-                    cv2.rectangle(current_view, (x1, y1), (x2, y2), (0, 255, 0), 2)
+                    
+                    # Color based on class
+                    color = (0, 255, 0) # Default Green
+                    if "muddy" in class_name.lower():
+                        color = (0, 0, 255) # Red for muddy
+                    elif "dry" in class_name.lower():
+                        color = (0, 255, 255) # Yellow for dry
+
+                    cv2.rectangle(current_view, (x1, y1), (x2, y2), color, 2)
+                    
+                    # Draw Label
+                    label = f"{class_name} {conf:.2f}"
+                    cv2.putText(current_view, label, (x1, y1 - 10),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
             # --- CALCULATE AVERAGE ---
             total_count = stats[name]['count']
@@ -114,10 +131,10 @@ def main():
             frame_list.append(current_view)
 
         # 4. Combine frames side-by-side
-        combined_view = np.hstack(frame_list)
-
-        # 5. Show
-        cv2.imshow('Statistical Comparison', combined_view)
+        if frame_list:
+            combined_view = np.hstack(frame_list)
+            # 5. Show
+            cv2.imshow('Statistical Comparison', combined_view)
 
         # Slow motion control (50ms)
         if cv2.waitKey(50) & 0xFF == ord('q'):
