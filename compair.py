@@ -9,7 +9,7 @@ VIDEO_PATH = "demo.mp4"
 # Put your model paths here
 MODELS = {
     "New Model": "pothole_detector_v1.pt",
-    "Model A": "best.pt",
+    "Model A": "best_new_1.pt",
     "Model B": "best _2.pt"
 }
 CONF_THRESHOLD = 0.4
