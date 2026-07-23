@@ -85,7 +85,7 @@ cd backend
 python run.py
 ```
 
-### With Configuration
+### Wit Configuration
 ```bash
 cd backend
 python run.py --video videos/demo.mp4 --preset speed
