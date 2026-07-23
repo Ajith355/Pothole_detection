@@ -77,7 +77,7 @@ Pothole_detection/
     └── README.md         # Frontend documentation
 ```
 
-## Usage Examples
+## 💻 Usage Examples
 
 ### Basic Usage
 ```bash
