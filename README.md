@@ -1,4 +1,4 @@
-# Pothole Detection System 🚗💥
+# Pothole Detection System 
 
 > Professional pothole detection and analysis using YOLO and depth estimation
 
